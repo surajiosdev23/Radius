@@ -1,10 +1,3 @@
-//
-//  ResponseModel.swift
-//  Radius
-//
-//  Created by Admin on 29/06/23.
-//
-
 import Foundation
 
 struct APIResponse: Codable {

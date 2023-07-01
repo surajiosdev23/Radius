@@ -1,9 +1,3 @@
-//
-//  SceneDelegate.swift
-//  Radius
-//
-//  Created by suraj jadhav on 28/06/23.
-//
 
 import UIKit
 

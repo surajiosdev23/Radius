@@ -1,55 +1,53 @@
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: BaseViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
     var facilities: [Facility] = []
     var exclusions: [[Exclusion]] = []
     var selectedOptions: [SelectedOption] = [SelectedOption]()
-    
-    // Example usage
+    var facilitiesVM : FacilitiesViewModel?
     var responseData: APIResponse? // Make APIResponse mutable
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Fetch data from the API
-        fetchData{
-        }
+        fetchData()
     }
     
-    func fetchData(completionHandler: () -> Void) {
-        guard let url = URL(string: "https://my-json-server.typicode.com/iranjith4/ad-assignment/db") else {
-            print("Invalid API URL")
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
-            if let error = error {
-                print("Error fetching data: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let data = data else {
-                print("No data received")
-                return
-            }
-            
-            do {
-                let response = try JSONDecoder().decode(APIResponse.self, from: data)
-                self?.facilities = response.facilities
-                self?.exclusions = response.exclusions
-                
-                DispatchQueue.main.async {
-                    // Configure table view
-                    self?.tableView.reloadData()
+    //MARK: SURAJ fetchData METHOD TO FETCH RESPONSE DATA
+    func fetchData(){
+        if isConnectedToNetwork(){
+            self.activityIndicatorBegin()
+            let url = ApiUrls.baseApi + ApiUrls.fetchFacilities
+            facilitiesVM = FacilitiesViewModel()
+            facilitiesVM?.getResponseData(url: url) { response in
+                self.activityIndicatorEnd()
+                switch response{
+                case .success(let data):
+                    print("success")
+                    guard let data = data else {
+                        return
+                    }
+                    self.facilities = data.facilities
+                    self.exclusions = data.exclusions
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                case .failure(let err):
+                    print("failure")
+                    print("ERROR \(err)")
+                    self.alert(title: "Alert", message: err.message ?? Constants.SOMETHING_WENT_WRONG)
                 }
-            } catch {
-                print("Error decoding data: \(error.localizedDescription)")
             }
-        }.resume()
+        }else{
+            self.alert(title: "Alert", message: Constants.INTERNET_CONNECTION_ALERT)
+        }
     }
     
+    //MARK: SURAJ TO CLEAR ALL FILTERS
     @IBAction func clearSelection(_ sender: UIBarButtonItem) {
         selectedOptions.removeAll()
         tableView.reloadData()
@@ -92,9 +90,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        print(facilities[indexPath.section].facility_id)
-        print(facilities[indexPath.section].options[indexPath.row].id)
         let selectedFacilityId = facilities[indexPath.section].facility_id
         let selectedOptionId = facilities[indexPath.section].options[indexPath.row].id
         let selectedOptionName = facilities[indexPath.section].options[indexPath.row].name
@@ -146,10 +141,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         }
         tableView.reloadData()
     }
-    
+}
+extension ViewController{
+    //MARK: SURAJ LOGIC TO HANDLE SELECTION, IF EXCLUSION CONDITION IS MATCHED, ALERT IS SHOWN TO THE USER.
     func isSelectionValid(selectionFor:SelectedOption) -> Bool{
         selectedOptions.append(selectionFor)
-        print(selectionFor)
         var isSelectionValid:Bool = true
         let optionCheckLen = exclusions[0].count
         
@@ -169,18 +165,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             let trueCount = checkExclusion.filter { $0 == true }.count
             if(trueCount == optionCheckLen){
                 isSelectionValid = false
-                print("exclusion found ")
                 let message = "You cannot select this combination."
-                self.showAlert(message: message)
+                self.alert(title: "Exclusion Violation", message: message)
                 break outerloop
             }
         }
         selectedOptions.removeLast()
         return isSelectionValid
-    }
-    func showAlert(message: String) {
-        let alert = UIAlertController(title: "Exclusion Violation", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
     }
 }

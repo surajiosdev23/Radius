@@ -13,8 +13,14 @@
 		1D5506C82A4C3C9D00217E7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D5506C62A4C3C9D00217E7F /* Main.storyboard */; };
 		1D5506CA2A4C3C9F00217E7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D5506C92A4C3C9F00217E7F /* Assets.xcassets */; };
 		1D5506CD2A4C3C9F00217E7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D5506CB2A4C3C9F00217E7F /* LaunchScreen.storyboard */; };
+		1D6F8DED2A4FE2DE0017E55F /* GenericNetworkCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F8DEC2A4FE2DE0017E55F /* GenericNetworkCall.swift */; };
+		1D6F8DF02A4FE3730017E55F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F8DEF2A4FE3730017E55F /* BaseViewController.swift */; };
+		1D6F8DF32A4FE4A40017E55F /* ApiUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F8DF22A4FE4A40017E55F /* ApiUrls.swift */; };
+		1D6F8DF52A4FE4B80017E55F /* CheckInternetConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F8DF42A4FE4B80017E55F /* CheckInternetConnection.swift */; };
+		1D6F8DF72A4FE88C0017E55F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F8DF62A4FE88C0017E55F /* Constants.swift */; };
+		1D6F8DFA2A4FE9700017E55F /* ViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F8DF92A4FE9700017E55F /* ViewController+Extension.swift */; };
 		84AC749C2A4DA6C4006424DE /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AC749B2A4DA6C4006424DE /* ResponseModel.swift */; };
-		84AC74A02A4DBF4D006424DE /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AC749F2A4DBF4D006424DE /* FilterViewModel.swift */; };
+		84AC74A02A4DBF4D006424DE /* FacilitiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AC749F2A4DBF4D006424DE /* FacilitiesViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,8 +32,14 @@
 		1D5506C92A4C3C9F00217E7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1D5506CC2A4C3C9F00217E7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1D5506CE2A4C3C9F00217E7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1D6F8DEC2A4FE2DE0017E55F /* GenericNetworkCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericNetworkCall.swift; sourceTree = "<group>"; };
+		1D6F8DEF2A4FE3730017E55F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		1D6F8DF22A4FE4A40017E55F /* ApiUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiUrls.swift; sourceTree = "<group>"; };
+		1D6F8DF42A4FE4B80017E55F /* CheckInternetConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInternetConnection.swift; sourceTree = "<group>"; };
+		1D6F8DF62A4FE88C0017E55F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1D6F8DF92A4FE9700017E55F /* ViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extension.swift"; sourceTree = "<group>"; };
 		84AC749B2A4DA6C4006424DE /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
-		84AC749F2A4DBF4D006424DE /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
+		84AC749F2A4DBF4D006424DE /* FacilitiesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +72,10 @@
 		1D5506BF2A4C3C9D00217E7F /* Radius */ = {
 			isa = PBXGroup;
 			children = (
+				1D6F8DF82A4FE93E0017E55F /* ViewController+extensions */,
+				1D6F8DF12A4FE48F0017E55F /* Utility */,
+				1D6F8DEE2A4FE31C0017E55F /* Controllers */,
+				1D6F8DEB2A4FE2C10017E55F /* Network Manager */,
 				84AC749E2A4DBC85006424DE /* View */,
 				84AC749D2A4DA6DD006424DE /* View Model */,
 				84AC749A2A4DA6AC006424DE /* Model */,
@@ -73,6 +89,40 @@
 			path = Radius;
 			sourceTree = "<group>";
 		};
+		1D6F8DEB2A4FE2C10017E55F /* Network Manager */ = {
+			isa = PBXGroup;
+			children = (
+				1D6F8DEC2A4FE2DE0017E55F /* GenericNetworkCall.swift */,
+			);
+			path = "Network Manager";
+			sourceTree = "<group>";
+		};
+		1D6F8DEE2A4FE31C0017E55F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1D6F8DEF2A4FE3730017E55F /* BaseViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		1D6F8DF12A4FE48F0017E55F /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				1D6F8DF22A4FE4A40017E55F /* ApiUrls.swift */,
+				1D6F8DF42A4FE4B80017E55F /* CheckInternetConnection.swift */,
+				1D6F8DF62A4FE88C0017E55F /* Constants.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		1D6F8DF82A4FE93E0017E55F /* ViewController+extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1D6F8DF92A4FE9700017E55F /* ViewController+Extension.swift */,
+			);
+			path = "ViewController+extensions";
+			sourceTree = "<group>";
+		};
 		84AC749A2A4DA6AC006424DE /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,7 +134,7 @@
 		84AC749D2A4DA6DD006424DE /* View Model */ = {
 			isa = PBXGroup;
 			children = (
-				84AC749F2A4DBF4D006424DE /* FilterViewModel.swift */,
+				84AC749F2A4DBF4D006424DE /* FacilitiesViewModel.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -168,10 +218,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D6F8DF32A4FE4A40017E55F /* ApiUrls.swift in Sources */,
 				1D5506C52A4C3C9D00217E7F /* ViewController.swift in Sources */,
 				1D5506C12A4C3C9D00217E7F /* AppDelegate.swift in Sources */,
-				84AC74A02A4DBF4D006424DE /* FilterViewModel.swift in Sources */,
+				1D6F8DED2A4FE2DE0017E55F /* GenericNetworkCall.swift in Sources */,
+				84AC74A02A4DBF4D006424DE /* FacilitiesViewModel.swift in Sources */,
+				1D6F8DF72A4FE88C0017E55F /* Constants.swift in Sources */,
 				84AC749C2A4DA6C4006424DE /* ResponseModel.swift in Sources */,
+				1D6F8DF52A4FE4B80017E55F /* CheckInternetConnection.swift in Sources */,
+				1D6F8DFA2A4FE9700017E55F /* ViewController+Extension.swift in Sources */,
+				1D6F8DF02A4FE3730017E55F /* BaseViewController.swift in Sources */,
 				1D5506C32A4C3C9D00217E7F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
