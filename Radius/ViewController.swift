@@ -90,87 +90,122 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Get the selected facility ID, option ID, and option name
         let selectedFacilityId = facilities[indexPath.section].facility_id
         let selectedOptionId = facilities[indexPath.section].options[indexPath.row].id
         let selectedOptionName = facilities[indexPath.section].options[indexPath.row].name
         
-        let userSelectedOption:SelectedOption = SelectedOption(facility_id: selectedFacilityId, option_id: selectedOptionId,belongToSection: indexPath.section,optionName: selectedOptionName)
+        // Create a SelectedOption object with the selected data
+        let userSelectedOption: SelectedOption = SelectedOption(facility_id: selectedFacilityId, option_id: selectedOptionId, belongToSection: indexPath.section, optionName: selectedOptionName)
+        
+        // Get the facility and option based on the selected indexPath
         let facility = facilities[indexPath.section]
         let option = facility.options[indexPath.row]
+        
+        // Variables for tracking selection state and index
         var isSelected = false
         var updateSelection = false
         var selectedIndex = 0
-        for (i,useroption) in selectedOptions.enumerated(){
-            if (useroption.facility_id == facility.facility_id && useroption.option_id == option.id){
+        
+        // Loop through the selectedOptions array to check if the option is already selected or if there is a selection update
+        for (i, userOption) in selectedOptions.enumerated() {
+            if (userOption.facility_id == facility.facility_id && userOption.option_id == option.id) {
                 isSelected = true
                 selectedIndex = i
                 break
             }
             
-            if (indexPath.section == useroption.belongToSection){
+            if (indexPath.section == userOption.belongToSection) {
                 selectedIndex = i
                 updateSelection = true
                 break
             }
         }
         
-        if(isSelected){
+        // Handle selection based on the selected state
+        if (isSelected) {
+            // If the option is already selected, remove it from the selectedOptions array
             selectedOptions.remove(at: selectedIndex)
-        }
-        else if (updateSelection){
-            let updateSelectionfor =  SelectedOption(facility_id: facility.facility_id, option_id: option.id, belongToSection: 0)
-            let canUpdate = isSelectionValid(selectionFor: updateSelectionfor)
-            if(canUpdate){
+        } else if (updateSelection) {
+            // If there is an update to the selection, check if it is valid and update the selectedOptions array
+            let updateSelectionFor = SelectedOption(facility_id: facility.facility_id, option_id: option.id, belongToSection: 0)
+            let canUpdate = isSelectionValid(selectionFor: updateSelectionFor)
+            if (canUpdate) {
                 selectedOptions[selectedIndex].facility_id = facility.facility_id
                 selectedOptions[selectedIndex].option_id = option.id
             }
-        }
-        else{
-            if(selectedOptions.isEmpty){
+        } else {
+            // If it's a new selection, check if it is valid and add it to the selectedOptions array
+            if (selectedOptions.isEmpty) {
                 selectedOptions.append(userSelectedOption)
-            }
-            else{
+            } else {
                 let isValid = isSelectionValid(selectionFor: userSelectedOption)
-                if(isValid){
+                if (isValid) {
                     selectedOptions.append(userSelectedOption)
-                }
-                else{
-                    print("invalid selection")
+                } else {
+                    print("Invalid selection")
                 }
             }
         }
+        
+        // Reload the tableView to reflect the updated selection
         tableView.reloadData()
     }
+    
 }
 extension ViewController{
     //MARK: SURAJ LOGIC TO HANDLE SELECTION, IF EXCLUSION CONDITION IS MATCHED, ALERT IS SHOWN TO THE USER.
-    func isSelectionValid(selectionFor:SelectedOption) -> Bool{
+    func isSelectionValid(selectionFor: SelectedOption) -> Bool {
+        // Append the selectionFor option to the selectedOptions array for validation
         selectedOptions.append(selectionFor)
-        var isSelectionValid:Bool = true
+        
+        // Variable to track the validity of the selection
+        var isSelectionValid: Bool = true
+        
+        // Determine the length of the exclusions array for checking
         let optionCheckLen = exclusions[0].count
         
-        outerloop : for (_,i) in exclusions.enumerated(){
-            var checkExclusion :[Bool] = [Bool]()
-            
-            for _ in  0..<selectedOptions.count{
-                checkExclusion.append(false)
-            }
-            for exclusionOption in i{
-                for (userIndex,userOption) in selectedOptions.enumerated(){
-                    if (exclusionOption.facility_id == userOption.facility_id && exclusionOption.options_id == userOption.option_id){
-                        checkExclusion[userIndex] = true
-                    }
+        // Outer loop through the exclusions array
+    outerloop: for (_, i) in exclusions.enumerated() {
+        // Create a boolean array to track the exclusion checks for each selected option
+        var checkExclusion: [Bool] = [Bool]()
+        
+        // Initialize the checkExclusion array with false values for each selected option
+        for _ in 0..<selectedOptions.count {
+            checkExclusion.append(false)
+        }
+        
+        // Check each exclusionOption against the selectedOptions
+        for exclusionOption in i {
+            for (userIndex, userOption) in selectedOptions.enumerated() {
+                if (exclusionOption.facility_id == userOption.facility_id && exclusionOption.options_id == userOption.option_id) {
+                    // If an exclusionOption matches a selected option, mark it as true in checkExclusion array
+                    checkExclusion[userIndex] = true
                 }
             }
-            let trueCount = checkExclusion.filter { $0 == true }.count
-            if(trueCount == optionCheckLen){
-                isSelectionValid = false
-                let message = "You cannot select this combination."
-                self.alert(title: "Exclusion Violation", message: message)
-                break outerloop
-            }
         }
+        
+        // Count the number of true values in the checkExclusion array
+        let trueCount = checkExclusion.filter { $0 == true }.count
+        
+        // If the trueCount matches the optionCheckLen, it means an exclusion combination is violated
+        if (trueCount == optionCheckLen) {
+            isSelectionValid = false
+            
+            // Display an alert indicating the exclusion violation
+            let message = "You cannot select this combination."
+            self.alert(title: "Exclusion Violation", message: message)
+            
+            // Break out of the outer loop
+            break outerloop
+        }
+    }
+        
+        // Remove the last added selectionFor option from the selectedOptions array
         selectedOptions.removeLast()
+        
+        // Return the validity of the selection
         return isSelectionValid
     }
+    
 }
